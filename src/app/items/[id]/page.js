@@ -1,7 +1,10 @@
 import Link from 'next/link';
 
 async function getItem(id) {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    if (!apiUrl.startsWith('http')) {
+        apiUrl = `https://${apiUrl}`;
+    }
     const res = await fetch(`${apiUrl}/items/${id}`, { cache: 'no-store' });
     if (!res.ok) return null;
     return res.json();
