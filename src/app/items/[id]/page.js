@@ -1,14 +1,7 @@
 import Link from 'next/link';
 
-async function getItem(id) {
-    let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-    if (!apiUrl.startsWith('http')) {
-        apiUrl = `https://${apiUrl}`;
-    }
-    const res = await fetch(`${apiUrl}/items/${id}`, { cache: 'no-store' });
-    if (!res.ok) return null;
-    return res.json();
-}
+
+import { getItem } from '../../../lib/dbconnect';
 
 export default async function ItemDetailsPage({ params }) {
     // Await params in Next.js 15+ (if using latest canary, params is a promise)

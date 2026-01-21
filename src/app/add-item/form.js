@@ -47,14 +47,11 @@ export default function AddItemForm() {
         }
 
         // 2. Save Item to Backend
+
         const itemData = { name, price: parseFloat(price), description, image: imageUrl };
-        let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-        if (!apiUrl.startsWith('http')) {
-            apiUrl = `https://${apiUrl}`;
-        }
 
         try {
-            const res = await fetch(`${apiUrl}/items`, {
+            const res = await fetch(`/api/items`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(itemData)

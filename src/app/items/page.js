@@ -1,21 +1,5 @@
 import Link from 'next/link';
-
-async function getItems() {
-    let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-    if (!apiUrl.startsWith('http')) {
-        apiUrl = `https://${apiUrl}`;
-    }
-    try {
-        const res = await fetch(`${apiUrl}/items`, { cache: 'no-store' }); // Ensure fresh data
-        if (!res.ok) {
-            throw new Error('Failed to fetch items');
-        }
-        return res.json();
-    } catch (error) {
-        console.error("Error fetching items:", error);
-        return [];
-    }
-}
+import { getItems } from '../lib/dbconnect';
 
 export default async function ItemsPage() {
     const items = await getItems();
