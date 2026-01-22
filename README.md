@@ -3,13 +3,13 @@
 MiniMart is a high-end, modern E-commerce application designed with a **premium glassmorphic aesthetic**. It provides a seamless shopping experience with real-time authentication, dynamic titles, and a robust product management system.
 
 ## 🔗 Project Links
-- **Live Site**: [Live Link Placeholder](https://mini-mart-demo.vercel.app)
-- **Server Repository**: [Express.js Backend](https://github.com/nabil-mahmud/mini-mart-server)
+- **Live Site**: [Live Link Placeholder](https://mini-mart-client-eight.vercel.app)
+
 
 ## 🔑 Login Credentials (Testing)
 You can register a new account or use the following social login:
 - **Google Login**: Click the 'Google' button on the login/register page to join instantly.
-- **Email/Password**: Create your own account with a profile picture to experience the full dashboard.
+- **Email/Password**: admin@admin.com / 123456.
 
 ## ✨ Key Features
 - **💎 Premium Design**: Modern UI built with Tailwind CSS 4, featuring glassmorphism, smooth gradients, and interactive micro-animations.
@@ -72,4 +72,4 @@ src/
    ```
 
 ---
-*Built with ❤️ by MiniMart Team*
+*Built with  by MiniMart Team*
