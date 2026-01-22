@@ -9,7 +9,7 @@ MiniMart is a high-end, modern E-commerce application designed with a **premium 
 ## 🔑 Login Credentials (Testing)
 You can register a new account or use the following social login:
 - **Google Login**: Click the 'Google' button on the login/register page to join instantly.
-- **Email/Password**: admin@admin.com / 123456.
+- **Email/Password**: admin@test.com / 123456.
 
 ## ✨ Key Features
 - **💎 Premium Design**: Modern UI built with Tailwind CSS 4, featuring glassmorphism, smooth gradients, and interactive micro-animations.
