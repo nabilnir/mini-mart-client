@@ -9,7 +9,7 @@ MiniMart is a high-end, modern E-commerce application designed with a **premium 
 ## 🔑 Login Credentials (Testing)
 You can register a new account or use the following social login:
 - **Google Login**: Click the 'Google' button on the login/register page to join instantly.
-- **Email/Password**: admin@admin.com / 123456.
+- **Email/Password**: admin@test.com / 123456.
 
 ## ✨ Key Features
 - **💎 Premium Design**: Modern UI built with Tailwind CSS 4, featuring glassmorphism, smooth gradients, and interactive micro-animations.
@@ -54,19 +54,7 @@ src/
    npm install
    ```
 
-3. **Configure Environment Variables**:
-   Create a `.env.local` file in the root and add:
-   ```env
-   NEXT_PUBLIC_API_URL=your_backend_url
-   NEXT_PUBLIC_IMGBB_API_KEY=your_imgbb_key
-   
-   # Firebase Config
-   NEXT_PUBLIC_FIREBASE_API_KEY=...
-   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
-   NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
-   ```
-
-4. **Run development server**:
+3. **Run development server**:
    ```bash
    npm run dev
    ```
