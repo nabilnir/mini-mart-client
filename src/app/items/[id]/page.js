@@ -1,48 +1,77 @@
+import { getItem } from '../../lib/dbconnect';
 import Link from 'next/link';
 
-
-import { getItem } from '../../../lib/dbconnect';
+export async function generateMetadata({ params }) {
+    const { id } = await params;
+    const item = await getItem(id);
+    return {
+        title: item ? `${item.name} | MiniMart` : 'Product Details | MiniMart',
+    };
+}
 
 export default async function ItemDetailsPage({ params }) {
-    // Await params in Next.js 15+ (if using latest canary, params is a promise)
-    // But in standard 14/15 stable it's props. Check version. Package.json said 16.1.4. Next 15+ async params.
     const { id } = await params;
     const item = await getItem(id);
 
     if (!item) {
         return (
-            <div className="max-w-7xl mx-auto py-20 text-center">
-                <h2 className="text-2xl font-bold text-slate-900">Item not found</h2>
-                <Link href="/items" className="text-blue-600 hover:underline mt-4 inline-block">Back to Items</Link>
+            <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
+                <h2 className="text-3xl font-bold text-slate-900">Item Not Found</h2>
+                <p className="text-slate-500">The product you are looking for does not exist or has been removed.</p>
+                <Link href="/items" className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">
+                    Browse All Products
+                </Link>
             </div>
         );
     }
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <Link href="/items" className="text-slate-500 hover:text-blue-600 mb-8 inline-block">&larr; Back to Listings</Link>
+        <div className="max-w-6xl mx-auto space-y-8">
+            <Link href="/items" className="text-slate-500 font-medium hover:text-blue-600 transition flex items-center gap-2">
+                &larr; Back to Listings
+            </Link>
 
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row">
-                <div className="md:w-1/2 bg-slate-100 h-[400px] md:h-auto min-h-[500px]">
+            <div className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100 grid md:grid-cols-2">
+
+                {/* Image Section */}
+                <div className="bg-slate-50 h-[400px] md:h-auto min-h-[500px] relative flex items-center justify-center group">
                     {item.image ? (
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                        <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        />
                     ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-400 text-xl font-medium">No Image Available</div>
+                        <div className="text-slate-300 font-bold text-2xl">No Image Available</div>
                     )}
                 </div>
-                <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-                    <h1 className="text-4xl font-bold text-slate-900 mb-4">{item.name}</h1>
-                    <p className="text-2xl text-green-600 font-bold mb-6">${item.price}</p>
-                    <div className="prose prose-slate mb-8 text-slate-600">
-                        <p>{item.description}</p>
+
+                {/* Content Section */}
+                <div className="p-10 md:p-14 flex flex-col justify-center space-y-6">
+                    <div>
+                        <h1 className="text-4xl font-extrabold text-slate-900 leading-tight mb-2">{item.name}</h1>
+                        <div className="flex items-center gap-2 text-sm font-medium text-slate-500">
+                            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">In Stock</span>
+                            <span>SKU: {item._id.substring(0, 8)}</span>
+                        </div>
                     </div>
 
-                    <div className="flex gap-4">
-                        <button className="flex-1 bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg">
+                    <p className="text-lg text-slate-600 leading-relaxed">
+                        {item.description}
+                    </p>
+
+                    <div className="pt-6 border-t border-slate-100 flex items-center justify-between">
+                        <span className="text-4xl font-extrabold text-blue-600">
+                            ${parseFloat(item.price).toFixed(2)}
+                        </span>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                        <button className="flex-1 bg-blue-600 text-white text-lg font-bold py-4 rounded-xl shadow-lg hover:bg-blue-700 hover:shadow-blue-600/30 transition transform hover:-translate-y-1">
                             Add to Cart
                         </button>
-                        <button className="flex-1 bg-slate-100 text-slate-900 py-4 rounded-xl font-bold hover:bg-slate-200 transition">
-                            Wishlist
+                        <button className="flex-1 bg-slate-100 text-slate-900 text-lg font-bold py-4 rounded-xl hover:bg-slate-200 transition">
+                            Save for Later
                         </button>
                     </div>
                 </div>

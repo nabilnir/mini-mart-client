@@ -5,36 +5,40 @@ import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/providers/AuthProvider';
 import Swal from 'sweetalert2';
 import Link from 'next/link';
-import { FaGoogle, FaEnvelope, FaLock, FaArrowRight } from 'react-icons/fa';
+import { FaGoogle, FaEnvelope, FaLock, FaUser, FaImage, FaArrowRight } from 'react-icons/fa';
 import useTitle from '@/hooks/useTitle';
 
-export default function LoginPage() {
-    useTitle('Login');
+export default function RegisterPage() {
+    useTitle('Register');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [photo, setPhoto] = useState('');
     const [password, setPassword] = useState('');
     const router = useRouter();
-    const { signIn, signInWithGoogle } = useContext(AuthContext);
+    const { createUser, signInWithGoogle, updateUserProfile } = useContext(AuthContext);
 
-    const handleLogin = async (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            await signIn(email, password);
+            const result = await createUser(email, password);
+            await updateUserProfile(name, photo);
+
             Swal.fire({
                 icon: 'success',
-                title: 'Welcome Back!',
-                text: 'Login successful.',
+                title: 'Account Created!',
+                text: `Welcome to MiniMart, ${name}!`,
                 showConfirmButton: false,
-                timer: 1500,
+                timer: 2000,
                 background: '#fff',
                 color: '#0f172a'
             });
             router.push('/');
         } catch (error) {
-            console.error("Login failed", error);
+            console.error("Registration failed", error);
             Swal.fire({
                 icon: 'error',
-                title: 'Login Failed',
-                text: error.message || 'Invalid email or password.',
+                title: 'Registration Failed',
+                text: error.message || 'Could not create account.',
                 background: '#fff',
                 color: '#0f172a',
                 confirmButtonColor: '#2563eb'
@@ -75,11 +79,39 @@ export default function LoginPage() {
                         <Link href="/" className="inline-block mb-2">
                             <img src="/logog.png" alt="MiniMart Logo" className="h-12 w-auto mx-auto object-contain" />
                         </Link>
-                        <h2 className="text-2xl font-bold text-slate-800">Welcome Back</h2>
-                        <p className="text-slate-500 text-sm">Log in to your account with your credentials or social account.</p>
+                        <h2 className="text-2xl font-bold text-slate-800">Join the Community</h2>
+                        <p className="text-slate-500 text-sm">Create an account to start your premium shopping journey.</p>
                     </div>
 
-                    <form onSubmit={handleLogin} className="space-y-4">
+                    <form onSubmit={handleRegister} className="space-y-4">
+                        <div className="space-y-1">
+                            <label className="text-xs font-bold text-slate-700 ml-1 uppercase tracking-wider">Full Name</label>
+                            <div className="relative">
+                                <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                                <input
+                                    type="text"
+                                    required
+                                    className="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all placeholder:text-slate-400 text-slate-700"
+                                    placeholder="John Doe"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="space-y-1">
+                            <label className="text-xs font-bold text-slate-700 ml-1 uppercase tracking-wider">Photo URL</label>
+                            <div className="relative">
+                                <FaImage className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                                <input
+                                    type="url"
+                                    required
+                                    className="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all placeholder:text-slate-400 text-slate-700"
+                                    placeholder="https://example.com/photo.jpg"
+                                    value={photo}
+                                    onChange={(e) => setPhoto(e.target.value)}
+                                />
+                            </div>
+                        </div>
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-slate-700 ml-1 uppercase tracking-wider">Email Address</label>
                             <div className="relative">
@@ -109,14 +141,12 @@ export default function LoginPage() {
                             </div>
                         </div>
 
-                        <div className="flex justify-end pt-1">
-                            <a href="#" className="text-xs font-bold text-blue-600 hover:text-blue-700 transition">Forgot Password?</a>
+                        <div className="pt-2">
+                            <button type="submit" className="group w-full bg-slate-900 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition transform active:scale-[0.98] shadow-lg shadow-slate-900/10">
+                                Create Account
+                                <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                            </button>
                         </div>
-
-                        <button type="submit" className="group w-full bg-slate-900 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition transform active:scale-[0.98] shadow-lg shadow-slate-900/10">
-                            Sign In
-                            <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                        </button>
                     </form>
 
                     <div className="relative">
@@ -124,7 +154,7 @@ export default function LoginPage() {
                             <div className="w-full border-t border-slate-200"></div>
                         </div>
                         <div className="relative flex justify-center text-xs">
-                            <span className="px-4 bg-transparent text-slate-400 font-bold uppercase tracking-widest">Or continue with</span>
+                            <span className="px-4 bg-transparent text-slate-400 font-bold uppercase tracking-widest">Or Register with</span>
                         </div>
                     </div>
 
@@ -134,12 +164,12 @@ export default function LoginPage() {
                             className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 py-4 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition shadow-sm active:scale-[0.98]"
                         >
                             <FaGoogle className="text-red-500" />
-                            Sign in with Google
+                            Sign up with Google
                         </button>
                     </div>
 
                     <p className="text-center text-sm text-slate-500 pt-2 font-medium">
-                        New to MiniMart? <Link href="/register" className="text-blue-600 font-black hover:underline">Create Account</Link>
+                        Already have an account? <Link href="/login" className="text-blue-600 font-black hover:underline">Login Now</Link>
                     </p>
                 </div>
             </div>

@@ -1,39 +1,68 @@
-import Link from 'next/link';
 import { getItems } from '../lib/dbconnect';
+import Link from 'next/link';
+
+export const metadata = {
+    title: "All Items | MiniMart",
+};
 
 export default async function ItemsPage() {
     const items = await getItems();
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="flex justify-between items-center mb-10">
-                <h1 className="text-3xl font-bold text-slate-900">All Products</h1>
+        <div className="space-y-12">
+            <div className="text-center space-y-4">
+                <h1 className="text-4xl font-extrabold text-slate-900">Explore Our Collection</h1>
+                <p className="text-lg text-slate-500 max-w-2xl mx-auto">
+                    Handpicked items just for you. Quality guaranteed.
+                </p>
             </div>
 
             {items.length === 0 ? (
-                <div className="text-center py-20 bg-white rounded-xl shadow-sm">
-                    <p className="text-lg text-slate-500 mb-4">No products found or server is down.</p>
-                    <p className="text-sm text-slate-400">Please make sure the backend is running.</p>
+                <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-slate-100">
+                    <p className="text-xl text-slate-400 font-medium">No products found.</p>
+                    <Link href="/add-item" className="mt-4 inline-block text-blue-600 font-bold hover:underline">
+                        Be the first to add one!
+                    </Link>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                     {items.map((item) => (
-                        <div key={item._id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
-                            <div className="h-48 w-full bg-slate-200 relative">
-                                {/* Provide placeholder if image fetch fails */}
+                        <div key={item._id} className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 flex flex-col">
+                            {/* Image Container */}
+                            <div className="relative h-64 w-full bg-slate-100 overflow-hidden">
                                 {item.image ? (
-                                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                    <img
+                                        src={item.image}
+                                        alt={item.name}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-slate-400">No Image</div>
+                                    <div className="w-full h-full flex items-center justify-center text-slate-300 font-medium">
+                                        No Image
+                                    </div>
                                 )}
+                                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-slate-900 shadow-sm">
+                                    New
+                                </div>
                             </div>
-                            <div className="p-5 flex-grow flex flex-col">
-                                <h3 className="text-xl font-semibold text-slate-900 mb-1">{item.name}</h3>
-                                <p className="text-slate-600 text-sm mb-4 line-clamp-2">{item.description}</p>
-                                <div className="mt-auto flex items-center justify-between">
-                                    <span className="text-green-600 font-bold text-lg">${item.price}</span>
-                                    <Link href={`/items/${item._id}`} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">
-                                        View Details
+
+                            {/* Content */}
+                            <div className="p-6 flex flex-col flex-grow">
+                                <h3 className="text-lg font-bold text-slate-900 mb-2 truncate" title={item.name}>
+                                    {item.name}
+                                </h3>
+                                <p className="text-sm text-slate-500 mb-4 line-clamp-2 flex-grow">
+                                    {item.description}
+                                </p>
+                                <div className="flex items-center justify-between mt-auto pt-4 border-t border-slate-50">
+                                    <span className="text-xl font-extrabold text-green-600">
+                                        ${parseFloat(item.price).toFixed(2)}
+                                    </span>
+                                    <Link
+                                        href={`/items/${item._id}`}
+                                        className="px-4 py-2 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-blue-600 transition shadow-lg shadow-slate-900/10"
+                                    >
+                                        View
                                     </Link>
                                 </div>
                             </div>
