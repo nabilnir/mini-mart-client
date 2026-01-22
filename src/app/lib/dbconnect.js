@@ -36,13 +36,25 @@ async function getDb() {
     return client.db('miniMartDB');
 }
 
-export async function getItems() {
+export async function getItems(page = 1, limit = 8) {
+    const skip = (page - 1) * limit;
     const db = await getDb();
-    const items = await db.collection('items').find({}).toArray();
+    const items = await db.collection('items')
+        .find({})
+        .sort({ _id: -1 }) // Newest first
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+
     return items.map(item => ({
         ...item,
         _id: item._id.toString()
     }));
+}
+
+export async function getTotalItems() {
+    const db = await getDb();
+    return db.collection('items').countDocuments();
 }
 
 export async function getItem(id) {
