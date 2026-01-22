@@ -54,19 +54,7 @@ src/
    npm install
    ```
 
-3. **Configure Environment Variables**:
-   Create a `.env.local` file in the root and add:
-   ```env
-   NEXT_PUBLIC_API_URL=your_backend_url
-   NEXT_PUBLIC_IMGBB_API_KEY=your_imgbb_key
-   
-   # Firebase Config
-   NEXT_PUBLIC_FIREBASE_API_KEY=...
-   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
-   NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
-   ```
-
-4. **Run development server**:
+3. **Run development server**:
    ```bash
    npm run dev
    ```
